@@ -31,7 +31,7 @@ shopt -s nullglob # not the dotted stuff
         do
             ((nbsubdir++))
             ((nbsamps++))
-#             sub=$(find "$s" -maxdepth 1 -type d )
+            sub=$(find "$s" -maxdepth 1 -type d )
 #
 #             if [ "$sub" ]
 #             then
@@ -51,12 +51,12 @@ snip=$(sed "${nbsamps}q;d" $snipsfile)
     # echo "$line"
 # done < "$snipsfile"
 
-# snip=$(echo "$subdir" | cut -c1-3)
+snip=$(echo "$subdir" | cut -c1-3)
 
-# repeats=$(sort "$snipsfile" | uniq -cd)
-# echo "$repeats"
+repeats=$(sort "$snipsfile" | uniq -cd)
+echo "$repeats"
 
-# echo "$snip">>"$snipsfile"
+echo "$snip">>"$snipsfile"
 # sniprepeat=$(sort $snipsfile | uniq -d)
 # sed -i -e '/$sniprepeat/ s/$sniprepeat/1/ ; s/$sniprepeat/0/' $snipsfile
 
@@ -115,10 +115,11 @@ snip=$(sed "${nbsamps}q;d" $snipsfile)
 # # :
 # # else
 #
-# snip=$(echo "$samps" | cut -c1-3)
+snip=$(echo "$samps" | cut -c1-3)
+
 cat <<eof >>"$snipsfile"
 snippet $snip "$d $subdir $sampdircount" i
-    "$subdir"
+    $subdir
 endsnippet
 
 eof
