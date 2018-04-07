@@ -1,0 +1,136 @@
+#!/bin/bash
+
+allsampsdirs=${HOME}/tidal-samples/
+
+cd "$allsampsdirs" || exit
+snipsfile=${HOME}/.dotfiles/plugged/ultisnips/UltiSnips/tidal.snippets
+export samplesyaml=${HOME}/tidal-samples/samplesdirnum.yml
+export countsamples=${HOME}/tidal-samples/countsamples
+export samplesetsfile=${HOME}/tidal-samples/samplesets
+export samplenrfile=${HOME}/tidal-samples/samplenr
+export snipsfile=${HOME}/tidal-samples/snips
+nbdir=0
+nbsubdir=0
+nbsamps=0
+
+for d in *
+do
+shopt -s nullglob # not the dotted stuff
+    if [ -d $d ]
+    then
+        ((nbdir++))
+        nbsubdir=0
+        echo "nbdir: $d $nbdir"
+        # echo "maindir${nbdir}: ${d}">>"$samplesyaml"
+        # nbsubdir=0
+    fi
+
+#     if [ $nbdir -gt 0 ] # i can't remember what is this
+#     then
+        for s in $d/*
+        do
+            ((nbsubdir++))
+            ((nbsamps++))
+#             sub=$(find "$s" -maxdepth 1 -type d )
+#
+#             if [ "$sub" ]
+#             then
+#                 echo "sub $sub"
+                subdir="${s/*\//}"
+#                 # the following prevent a subdir for every sample
+#                 # samp is only for that
+# -links 2
+
+sampdircount=$(find "$s" -maxdepth 1 -type f | wc -l)
+
+echo "sample$nbsubdir: "$subdir"_$sampdircount"
+
+snip=$(sed "${nbsamps}q;d" $snipsfile)
+# while IFS='' read -r line || [[ -n "$line" ]]
+# do
+    # echo "$line"
+# done < "$snipsfile"
+
+# snip=$(echo "$subdir" | cut -c1-3)
+
+# repeats=$(sort "$snipsfile" | uniq -cd)
+# echo "$repeats"
+
+# echo "$snip">>"$snipsfile"
+# sniprepeat=$(sort $snipsfile | uniq -d)
+# sed -i -e '/$sniprepeat/ s/$sniprepeat/1/ ; s/$sniprepeat/0/' $snipsfile
+
+# sed -i -e 's/gui' $snipsfile
+# sed -r ':a;/sou/{x;:b;s/9(_*)$/_\1/;tb;s/^(_*)$/0\1/;s/$/:0123456789/;s/([^_])(_*):.*\1(.).*/\3\2/;s/_/0/g;x;G;s/sou(.*)\n(.*)/\2\1/;ta}' "$snipsfile"
+
+
+
+# echo "snip $snip"
+               # find "$s" -type d -exec bash -c 'cd "$1"; printf "$pwd" | rev | cut -d '/' -f 1  | rev' -- {} \;
+#                 export samps
+#                 if [[ "$subdir" != *"$samps"* ]]
+#                 then
+#                     nbsubdir=$((nbsubdir+1))
+#                     echo "nbsubdir $subdir $nbsubdir"
+#                     echo "  subdir${nbsubdir}: ${subdir}">>"$samplesyaml"
+#                     sampdircount=$(find "$s" -maxdepth 1 -type d | wc -l)
+#                     export sampdircount
+#                 fi
+#          for i in $(seq 1 "$sampdircount")
+#          do
+#              # echo $nbsamps
+#              ((nbsamps++))
+#              echo "$sampdircount"
+#              echo "$nbsamps">>"$countsamples"
+#          done
+#
+#           find "$s" -type d -exec bash -c '
+#           cd "$1"
+#           samplesets="${1/*\//}"
+#           # echo "sample sets $samplesets"
+#           echo "${samplesets}">>"$samplesetsfile"
+#           samplenr=$(find . -type f | wc -l)
+#           # echo " samplenr $samplenr"
+#           echo "${samplenr}">>"$samplenrfile"
+#           # subdircount=$(find "$pwd" -type d | wc -l)
+#           # echo "subdircount $subdircount"
+#           # echo "$1"
+#           # if grep -q $samples "$samplesyaml"
+#               # then
+#                   # :
+#               # else
+#                   # :
+#                   # fi
+#           ' -- {} \;
+# # while ifs='' read -r line || [[ -n "$line" ]]
+#                   # do
+#                       # nbsamps="$line"
+#                       # echo "$line"
+#                       # export nbsamps
+#                   # done < "$countsamples"
+#                           # echo "iiiiii $nbsamps"
+#                           # echo "    sample$nbsamps: ${samplesets}_${samplenr}">>"$samplesyaml"
+# # if grep -q $d $snipsfile;
+# # then
+# # :
+# # else
+#
+# snip=$(echo "$samps" | cut -c1-3)
+cat <<eof >>"$snipsfile"
+snippet $snip "$d $subdir $sampdircount" i
+    "$subdir"
+endsnippet
+
+eof
+#
+# # fi
+#       fi
+    done
+# fi
+done
+
+# while IFS='' read -r line || [[ -n "$line" ]]
+# do
+    # echo "POW!"
+    # echo "$line"
+# done < "$samplesyaml"
